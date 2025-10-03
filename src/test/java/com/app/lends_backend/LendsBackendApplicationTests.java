@@ -1,10 +1,10 @@
-package com.app.lend_it_backend;
+package com.app.lends_backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LendItBackendApplicationTests {
+class LendsBackendApplicationTests {
 
 	@Test
 	void contextLoads() {
