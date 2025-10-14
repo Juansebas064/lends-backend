@@ -4,6 +4,7 @@ import com.app.lends_backend.dto.UserDto;
 import com.app.lends_backend.model.User;
 import com.app.lends_backend.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,12 @@ public class UserController {
 
     @PostMapping(path = "/register")
     public ResponseEntity<UserDto> registerUser(@RequestBody User user) {
-        var response = userService.registerUser(user);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        try {
+            var response = userService.registerUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
 //    boolean isMatch = passwordEncoder.matches(rawPassword, encodedPassword);

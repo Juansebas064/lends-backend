@@ -7,8 +7,6 @@ import com.app.lends_backend.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -21,7 +19,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<UserDto> getAllUsers() {
+    public Iterable<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
                 .map(userMapper::toDto)
