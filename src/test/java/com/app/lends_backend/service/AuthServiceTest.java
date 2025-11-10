@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+public class AuthServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -28,10 +28,10 @@ public class UserServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private UserService userService;
+    private AuthService authService;
 
     @Test
-    void whenRegisterUser_thenPasswordShouldBeEncodedAndUserSaved() {
+    void whenRegisterUser_thenPasswordShouldBeEncodedAndFirstAdminUserSaved() {
         // First step: Arrange the data
         User userToRegister = new User(
                 null,
@@ -69,7 +69,7 @@ public class UserServiceTest {
         when(userMapper.toDto(savedUser)).thenReturn(expectedUserDto);
 
         // Third step: Act
-        UserDto actualUserDto = userService.registerUser(userToRegister);
+        UserDto actualUserDto = authService.registerFirstAdminUser(userToRegister);
 
         // Fourth step: Assert
         // 1. ¿Is the result the expected one from the mapper?

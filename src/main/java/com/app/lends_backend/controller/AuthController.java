@@ -2,7 +2,7 @@ package com.app.lends_backend.controller;
 
 import com.app.lends_backend.dto.UserDto;
 import com.app.lends_backend.model.User;
-import com.app.lends_backend.service.UserService;
+import com.app.lends_backend.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -11,28 +11,20 @@ import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(path = "/api/users")
-public class UserController {
+@RequestMapping(path = "/api/auth")
+public class AuthController {
 
-    private UserService userService;
+    private AuthService authService;
 
-    @GetMapping("/all")
-    public ResponseEntity<Iterable<UserDto>> getAllUsers() {
-        var response = userService.getAllUsers();
-        if (response == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping(path = "/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody User user) {
+    @PostMapping(path = "/setup-admin-user")
+    public ResponseEntity<UserDto> registerFirstAdminUser(@RequestBody User user) {
         try {
-            var response = userService.registerUser(user);
+            var response = authService.registerFirstAdminUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
